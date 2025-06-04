@@ -1,0 +1,46 @@
+syntax="proto2";
+option go_package = "/;tgMili";
+package tgMili;
+
+message BaseRequest {
+  optional  bytes  sessionKey  = 1;
+  optional  uint32  uin  = 2;
+  optional  bytes  deviceId  = 3;
+  optional  int32  clientVersion  = 4;
+  optional  bytes  deviceType  = 5;
+  optional  uint32  scene  = 6;
+}
+
+message SKBuiltinString_t {
+  optional  string  string  = 1;
+}
+
+message BaseResponse {
+  optional  int32  ret  = 1;
+  optional  SKBuiltinString_t  errMsg  = 2;
+}
+
+message ModContactTypeInfo {
+  optional  string  userName  = 1;
+  optional  uint32  modType  = 2;
+  optional  uint32  modOperation  = 3;
+}
+
+message ModContactTypeResInfo {
+  optional  int32  ret  = 1;
+  optional  ModContactTypeInfo  modOperation  = 2;
+  optional  uint32  resInfo  = 3;
+}
+
+message BatchModContactTypeRequest {
+  required  BaseRequest  baseRequest  = 1;
+  optional  uint32  modTypeInfoCount  = 2;
+  repeated  ModContactTypeInfo  modTypeInfoList  = 3;
+  optional  uint32  scene  = 4;
+}
+
+message BatchModContactTypeResponse {
+  required  BaseResponse  baseResponse  = 1;
+  optional  uint32  resInfoCount  = 2;
+  repeated  ModContactTypeResInfo  resInfoList  = 3;
+}

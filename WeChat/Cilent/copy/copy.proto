@@ -1,0 +1,14 @@
+syntax = "proto3";
+option go_package = "/;copy";
+package copy;
+
+message SaeInfo {
+  optional bytes type = 1;
+  optional bytes iv = 2;
+  optional uint32 len = 3;
+  optional bytes unknowValue9 = 9;
+  optional bytes tableKey = 10;
+  optional bytes unknowValue11 = 11;
+  optional bytes tableValue = 12;
+  optional bytes unknowValue18 = 18;
+}

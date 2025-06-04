@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+  <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+  <style>
+    /* Reset */
+    html {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin: 0;
+      position: relative;
+    }
+
+    #swagger-ui {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px; /* 控制 Swagger UI 最大宽度 */
+      margin: 0 auto; /* 居中显示 */
+      background-color: rgba(255, 255, 255, 0.9); /* 添加透明白色背景 */
+      padding: 20px; /* 添加内边距 */
+      border-radius: 10px; /* 添加圆角 */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* 添加阴影 */
+    }
+
+    /* Floating window */
+    .floating-window {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.9); /* 添加透明白色背景 */
+      padding: 10px 20px; /* 添加内边距 */
+      border-radius: 10px; /* 添加圆角 */
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 255, 0.8); /* 添加阴影和发光 */
+      z-index: 2;
+      animation: glow 2s infinite alternate; /* 添加发光动画 */
+    }
+
+    /* Text glow effect */
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8); /* 发光效果 */
+      }
+      to {
+        box-shadow: 0 0 40px rgba(0, 255, 255, 0.8); /* 加强发光效果 */
+      }
+    }
+
+    /* Particle effect */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    /* Link card */
+    .card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      animation: cardMove 10s infinite;
+      /* 设置初始大小 */
+      width: 100px;
+      height: auto;
+      z-index: 2;
+      cursor: pointer;
+      /* 添加动画特效 */
+      transition: transform 0.5s ease-in-out, filter 0.5s ease-in-out;
+    }
+
+    /* 卡片放大动画 */
+    .card:hover {
+      transform: scale(1.2); /* 放大 1.2 倍 */
+      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8)); /* 添加阴影 */
+    }
+
+    @keyframes cardMove {
+      0% {
+        transform: translateX(0) translateY(0);
+      }
+      50% {
+        transform: translateX(50vw) translateY(50vh);
+      }
+      100% {
+        transform: translateX(0) translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div id="particles-js"></div>
+<div id="swagger-ui"></div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
+<script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+<script>
+  window.onload = function() {
+    // Initialize Particle effect
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#ffffff" /* 修改粒子颜色为白色 */
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          },
+          "image": {
+            "src": "img/github.svg",
+            "width": 100,
+            "height": 100
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#ffffff", /* 修改连线颜色为白色 */
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 6,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1000
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+          "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Initialize Swagger UI
+    const ui = SwaggerUIBundle({
+      url: "/swagger.json",
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      plugins: [
+        SwaggerUIBundle.plugins.DownloadUrl
+      ]
+    });
+
+    window.ui = ui;
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+FROM golang:1.15.4
+MAINTAINER "ZeroLi"
+
+# 配置apt-get源
+# ADD sources.list /etc/apt/
+# 更新apt-get源 安装ssh服务 修改root密码 配置ssh服务允许root远程登录 写"开启ssh服务 写地址信息到/root/ip.txt 并tail -f"到/root/ip.sh 赋予ip.sh执行权限
+RUN apt-get update
+RUN apt-get -y install ssh
+RUN echo "root:1" | chpasswd
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+RUN echo "service ssh start && ip addr | grep global > /root/ip.txt && tail -f /root/ip.txt" > /root/ip.sh
+RUN chmod +x /root/ip.sh
+
+# Compile Delve
+RUN apt-get -y install git
+RUN go get -u github.com/go-delve/delve/cmd/dlv && \
+    go build -o /usr/local/go/bin/dlv github.com/go-delve/delve/cmd/dlv
+RUN cp -r /usr/local/go/bin/. /bin
+
+EXPOSE 8087 22 2345
+# 启动时执行ssh
+ENTRYPOINT ["sh","-l"]
+CMD ["/root/ip.sh"]
+# cd /usr/wic-go/ && dlv debug --headless --listen=:2346 --api-version=2 --accept-multiclient

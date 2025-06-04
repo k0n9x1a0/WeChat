@@ -1,0 +1,441 @@
+syntax = "proto2";
+option go_package = "/;wechat";
+package wechat;
+
+message BaseRequest {
+    optional  bytes  sessionKey  = 1;
+    optional  uint32  uin  = 2;
+    optional  bytes  deviceId  = 3;
+    optional  int32  clientVersion  = 4;
+    optional  bytes  deviceType  = 5;
+    optional  uint32  scene  = 6;
+}
+
+
+message BaseRequestPlus {
+    //会话key base64字符串
+    optional bytes session_key = 1;
+    optional uint32 uin = 2;
+    optional bytes deviceId = 3;
+    optional int32 clientVersion = 4;
+    optional string osType = 5;
+    optional uint32 scene = 6;
+}
+
+
+
+message SKBuiltinString_t {
+    optional  string  string  = 1;
+}
+
+message BaseResponse {
+    optional  int32  ret  = 1;
+    optional  SKBuiltinString_t  errMsg  = 2;
+}
+
+message MMBizJsApiGetUserOpenIdRequest {
+    required BaseRequest BaseRequest = 1;
+    optional string AppId = 2;
+    optional string BusiId = 3;
+    optional string UserName = 4;
+}
+message MMBizJsApiGetUserOpenIdResponse {
+    required BaseResponse BaseResponse = 1;
+    optional string Openid = 2;
+    optional string NickName = 3;
+    optional string HeadImgUrl = 4;
+    optional string Sign = 5;
+    optional uint32 FriendRelation = 6;
+    optional string XXX_NoUnkeyedLiteral = 7;
+    optional string XXX_unrecognized = 8;
+    optional string XXX_sizecache = 9;
+}
+
+message Buffer_t {
+    required uint32 iLen = 1;
+    optional bytes Buffer = 2;
+}
+
+
+message EcdhPacket{
+    required uint32 Type = 1; //固定为1
+    required Buffer_t Key = 2;//第5步生成的publickey
+    required bytes Token = 3;//第8步结果
+    optional string Url = 4; //空串
+    optional bytes ProtobufData = 5;//第10步结果
+}
+
+message HybridDecryptResponse {
+    required Buffer_t Key = 1;//第5步生成的publickey
+    required uint32 Type = 2;
+    required bytes ProtobufData = 3;//第8步结果
+    optional bytes token = 4; //空串
+}
+
+message HybridEcdhRequest{
+    optional int32 type = 1;
+    optional Buffer_t SecECDHKey = 2;
+    optional bytes randomkeydata = 3;
+    optional bytes randomkeyextenddata = 4;
+    optional bytes encyptdata = 5;
+}
+
+message HybridEcdhResponse{
+    optional Buffer_t SecECDHKey = 1;
+    optional int32 type = 2;
+    optional bytes decryptdata = 3;
+    optional bytes randomkeyextenddata = 4;
+}
+
+
+message ECDHKey {
+    optional uint32 nid = 1;
+    optional SKBuiltinString_ key = 2;
+}
+
+
+
+message SKBuiltinString_ {
+    optional uint32 len = 1;
+    //base64字符串
+    optional bytes buffer = 2;
+}
+
+
+message ManualAuthRsaReqData {
+    optional SKBuiltinString_ randomEncryKey = 1;
+    optional ECDHKey cliPubEcdhkey = 2;
+    optional string userName = 3;
+    optional string pwd = 4;
+    optional string pwd2 = 5;
+}
+
+message WTLoginImgReqInfo {
+    optional string img_sid = 1;
+    optional string img_code = 2;
+    optional string img_encrypt_key = 3;
+    optional SKBuiltinString_ ksid = 4;
+}
+
+message WxVerifyCodeReqInfo {
+    optional string verify_signature = 1;
+    optional string verify_content = 2;
+}
+
+message BaseAuthReqInfo {
+    optional SKBuiltinString_ wt_login_req_buff = 1;
+    optional WTLoginImgReqInfo wt_login_img_req_info = 2;
+    optional WxVerifyCodeReqInfo wx_verify_code_req_info = 3;
+    optional SKBuiltinString_ clidb_encrypt_key = 4;
+    optional SKBuiltinString_ clidb_encrypt_info = 5;
+    optional uint32 auth_req_flag = 6;
+    optional string auth_ticket = 7;
+}
+
+message ManualAuthAesReqData {
+    optional BaseRequest baseRequest = 1;
+    optional BaseAuthReqInfo baseReqInfo = 2;
+    optional string imei = 3;
+    optional string softType = 4;
+    optional uint32 builtinIpseq = 5;
+    optional string clientSeqId = 6;
+    optional string signature = 7;
+    optional string deviceName = 8;
+    optional string deviceType = 9;
+    optional string language = 10;
+    optional string timeZone = 11;
+    optional int32 channel = 13;
+    optional uint32 timeStamp = 14;
+    optional string deviceBrand = 15;
+    optional string deviceModel = 16;
+    optional string ostype = 17;
+    optional string realCountry = 18;
+    optional string bundleId = 19;
+    optional string adSource = 20;
+    optional string iphoneVer = 21;
+    optional uint32 inputType = 22;
+    optional SKBuiltinString_ clientCheckData = 23;
+    optional SKBuiltinString_ extSpamInfo = 24;
+}
+
+message TrustSoftData{
+    optional string SoftConfig=1;
+    optional bytes SoftData=2;
+}
+
+message TrustResponseData{
+    optional TrustSoftData SoftData=2;
+    optional string DeviceToken=3;
+    optional uint64 Timestamp=4;
+}
+
+message TrustResp{
+    required BaseResponse BaseResponse = 1;
+    optional TrustResponseData TrustResponseData=2;
+}
+
+message AutoAuthKey {
+    required Buffer_t EncryptKey = 1;
+    required Buffer_t Key = 2;
+}
+
+message AutoAuthRsaReqData {
+    optional SKBuiltinString_ aes_encrypt_key = 2;
+    optional ECDHKey pubEcdhKey = 3;
+}
+
+message AutoAuthAesReqData {
+    optional BaseRequestPlus base_request = 1;
+    optional BaseAuthReqInfo base_req_info = 2;
+    optional SKBuiltinString_ auto_auth_key = 3;
+    optional string imei = 4;
+    optional string soft_type = 5;
+    optional uint32 builtin_ip_seq = 6;
+    optional string client_seq_id = 7;
+    optional string signature = 8;
+    optional string device_name = 9;
+    optional string deviceType = 10;
+    optional string language = 11;
+    optional string time_zone = 12;
+    optional uint32 channel = 13;
+    optional SKBuiltinString_ clientCheckData = 14;
+    optional SKBuiltinString_ extSpamInfo = 15;
+}
+
+message AutoAuthRequest {
+    optional AutoAuthRsaReqData rsa_req_data = 1;
+    optional AutoAuthAesReqData aes_req_data = 2;
+}
+
+
+message WCExtInfoNew {
+    optional Buffer_t Wcstf = 1 ;
+    optional Buffer_t Wcste = 2 ;
+    optional Buffer_t CcData = 3 ;
+    optional Buffer_t UserAttrInfo = 4 ;
+    optional Buffer_t AcgiDeviceInfo = 5 ;
+    optional Buffer_t AcgiTuring = 6 ;
+    optional Buffer_t DeviceToken = 7 ;
+    optional Buffer_t BehaviorId = 8 ;
+    optional Buffer_t IosturingHuman = 101 ;
+    optional Buffer_t IosturingOwner = 102 ;
+}
+
+message FileInfo {
+    optional string Filepath = 1;
+    optional string Fileuuid = 2;
+}
+
+message SpamDataBody {
+    required int32 UnKnown1 = 1;
+    required uint32 TimeStamp = 2;
+    required int32 KeyHash = 3;
+    required string Yes1 = 11;
+    required string Yes2 = 12;
+    required string IosVersion = 13;
+    required string DeviceType = 14;
+    required int32 UnKnown2  = 15;
+    required string IdentifierForVendor = 16;
+    required string AdvertisingIdentifier  = 17;
+    required string Carrier = 18;
+    required int32 BatteryInfo = 19;
+    required string NetworkName = 20;
+    required int32 NetType = 21;
+    required string AppBundleId = 22;
+    required string DeviceName = 23;
+    required string UserName = 24;
+    required int64 Unknown3 = 25;
+    required int64 Unknown4 = 26;
+    required int32 Unknown5 = 27;
+    required int32 Unknown6 = 28;
+    required string Lang = 29;
+    required string Country = 30;
+    required int32 Unknown7 = 31;
+    required string DocumentDir = 32;
+    required int32 Unknown8 = 33;
+    required int32 Unknown9 = 34;
+    required string HeadMD5 = 35;
+    required string AppUUID = 36;
+    required string SyslogUUID = 37;
+    required string WifiName = 38;
+    required string WifiMac = 39;
+    required string AppName  = 40;
+    optional string SshPath = 41;
+    optional string TempTest = 42;
+    optional string DevMD5 = 43;
+    optional string DevUser = 44;
+    optional string DevPrefix = 45;
+    repeated FileInfo AppFileInfo = 46;
+    required string Unknown12 = 47;
+    required int32 IsModify = 50;
+    required string ModifyMD5 = 51;
+    required int64 RqtHash = 52;
+    required int32 Unknown13 = 53;
+    required int32 Unknown14 = 54;
+    required string Ssid = 55;
+    required int32  Unknown15 = 56;
+    required string Bssid = 57;
+    required int32 IsJail = 58;
+    optional string Seid = 59;
+    optional int32 Unknown16 = 60;
+    optional int32 Unknown17 = 61;
+    optional int32 Unknown18 = 62;
+    optional int32 WifiOn = 63;
+    optional int32 BluethOn = 64;
+    optional string BluethName = 65;
+    optional string BluethMac = 66;
+    optional int32 Unknown19 = 67;
+    optional int32 Unknown20 = 68;
+    optional int32 Unknown26 = 69;
+    optional int32 HasSim = 70;
+    optional int32 UsbState = 71;
+    optional int32  Unknown27 = 72;
+    optional int32 Unknown28 = 73;
+    optional string Sign = 74;
+    optional uint32 PackageFlag = 75;
+    optional uint32 AccessFlag = 76;
+    optional string Imei = 77;
+    optional string DevSerial = 78;
+    optional uint32 Unknown29 = 79;
+    optional uint32 Unknown30 = 80;
+    optional uint32 Unknown31 = 81;
+    optional uint32 Unknown32 = 82;
+    optional uint32 AppNum = 83;
+    optional string Totcapacity = 84;
+    optional string Avacapacity = 85;
+    optional uint32 Unknown33 = 86;
+    optional uint32 Unknown34 = 87;
+    optional uint32 Unknown35 = 88;
+    optional int32 Unknown103 = 89;
+    optional int32 Unknown104 = 90;
+    optional int32 Unknown105 = 91;
+    optional uint32 Unknown106 = 92;
+    optional int32 Unknown107 = 93;
+    optional int32 Unknown108 = 94;
+    optional int32 Unknown109 = 95;
+    optional int32 Unknown110 = 96;
+    optional int32 Unknown111 = 97;
+    optional uint32 Unknown112 = 98;
+
+}
+
+message NewClientCheckData {
+    optional int64 C32cData = 1;
+    optional int64 TimeStamp = 2;
+    optional bytes DataBody = 3;
+}
+
+message DeviceRunningInfoNew {
+    required bytes Version = 1;
+    required uint32 Type = 2;
+    required bytes EncryptData = 3;
+    required uint32 Timestamp = 4;
+    required uint32 Unknown5 = 5;
+    required uint32 Unknown6 = 6;
+}
+
+message WCSTF {
+    required uint64 StartTime = 1;
+    required uint64 CheckTime = 2;
+    required uint32 Count = 3;
+    repeated uint64 EndTime = 4;
+}
+
+
+message WCSTE {
+    required string CheckId = 1;
+    required uint32 StartTime = 2;
+    required uint32 CheckTime = 3;
+    required uint32 Count1 = 4;
+    required uint32 Count2 = 5;
+    required uint32 Count3 = 6;
+    required uint64 Const1 = 7;
+    required uint64 Const2 = 8;
+    required uint64 Const3 = 9;
+    required uint64 Const4 = 10;
+    required uint64 Const5 = 11;
+    required uint64 Const6 = 12;
+}
+
+
+message SaeInfo {
+    optional bytes type = 1;
+    optional bytes iv = 2;
+    optional uint32 len = 3;
+    optional bytes unknowValue9 = 9;
+    optional bytes tableKey = 10;
+    optional bytes unknowValue11 = 11;
+    optional bytes tableValue = 12;
+    optional bytes unknowValue18 = 18;
+}
+
+message TenPayRequest {
+    optional BaseRequest baseRequest = 1;
+    optional uint32 cgiCmd = 2;
+    optional uint32 outPutType = 3;
+    optional SKBuiltinString_ reqText = 4;
+    optional SKBuiltinString_ reqTextWx = 5;
+    optional string sign = 6;
+    optional string crtNo = 7;
+}
+
+
+message SKBuiltinBuffer_t {
+    optional  uint32  iLen  = 1;
+    optional  bytes  buffer  = 2;
+}
+
+message UploadAppAttachRequest {
+    optional BaseRequest BaseRequest = 1;
+    optional string appId = 2;
+    optional uint32 sdkVersion = 3;
+    optional string clientAppDataId = 4;
+    optional string userName = 5;
+    optional uint32 totalLen = 6;
+    optional uint32 startPos = 7;
+    optional uint32 dataLen = 8;
+    optional SKBuiltinBuffer_t data = 9;
+    optional uint32 type = 10;
+    optional string md5 = 11;
+}
+
+
+message UploadAppAttachResponse {
+    optional BaseResponse BaseResponse = 1;
+    optional string appId = 2;
+    optional string mediaId = 3;
+    optional string clientAppDataId = 4;
+    optional string userName = 5;
+    optional uint32 totalLen = 6;
+    optional uint32 startPos = 7;
+    optional uint32 dataLen = 8;
+    optional uint64 createTime = 9;
+}
+
+
+message DownloadVoiceRequest {
+    optional uint64 msgId = 1;
+    optional uint32 offset = 2;
+    optional uint32 length = 3;
+    optional string clientMsgId = 4;
+    optional BaseRequest baseRequest = 5;
+    optional uint64 newMsgId = 6;
+    optional string chatRoomName = 7;
+    optional int64 masterBufId = 8;
+}
+
+message DownloadVoiceResponse {
+    optional uint32 msgId = 1;
+    optional uint32 offset = 2;
+    optional uint32 length = 3;
+    optional uint32 voiceLength = 5;
+    optional string clientMsgId = 6;
+    optional SKBuiltinString_ data = 7;
+    optional uint32 endFlag = 8;
+    optional BaseResponse baseResponse = 9;
+    optional uint32 cancelFlag = 10;
+    optional uint64 newMsgId = 11;
+}
+
+
+
